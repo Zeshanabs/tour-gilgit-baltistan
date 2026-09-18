@@ -4,6 +4,7 @@ import api from '../services/api';
 import PlaceCard from '../components/PlaceCard';
 import TourCard from '../components/TourCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { fallbackTours } from '../data/tourPackages';
 
 const highlights = [
   { number: '7,788 m', label: 'Rakaposhi, seen from the Karakoram Highway' },
@@ -23,10 +24,23 @@ const travelPillars = [
   ['Clear planning', 'Ask about transport, stays, permits and seasonal access before you book.'],
 ];
 
+const seasonalGuide = [
+  ['Spring · Apr–May', 'Orchards bloom across Hunza and Nagar, valley roads reopen and daytime walks are comfortable. Higher passes may still be closed.'],
+  ['Summer · Jun–Aug', 'The widest choice for Skardu, Deosai, Astore and trekking routes. Expect warm days, cooler nights and popular sights to be busier.'],
+  ['Autumn · Sep–Oct', 'Clear mountain light and golden poplar trees make this a favourite season for road trips, photography and heritage stays.'],
+  ['Winter · Nov–Mar', 'A quieter, colder season for lower valleys and local culture. High-altitude road access and services are more limited.'],
+];
+
+const journalNotes = [
+  ['Stay a little longer', 'Mountain distances take time. Two nights in a valley gives you space for weather, local food and the quiet moments between sights.'],
+  ['Travel with respect', 'Dress thoughtfully in villages, ask before photographs, and choose refillable bottles and reusable bags wherever possible.'],
+  ['Pack for four seasons', 'Sun, wind and sudden cold can all arrive in one day. A warm layer, rain shell, sunglasses and sturdy shoes go a long way.'],
+];
+
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1589213663665-c388d8225f89?auto=format&fit=crop&w=2200&q=85',
-    alt: 'Mountain road through the Karakoram landscape',
+    image: 'https://www.onthegotours.com/repository/Attabad-Lake--Pakistan-1084091763470758_crop_flip_2250_1200_f2f2f2_center-center.jpg',
+    alt: 'Turquoise Attabad Lake surrounded by Karakoram mountains',
     eyebrow: 'Gilgit-Baltistan, Pakistan',
     title: 'Mountain journeys with room to breathe.',
     description: 'From Hunza’s high villages to Skardu’s open landscapes, discover a considered way to travel through the Karakoram.',
@@ -66,7 +80,7 @@ function Home() {
       try {
         const [placesRes, toursRes] = await Promise.all([api.get('/api/places'), api.get('/api/tours')]);
         setPlaces(placesRes.data || []);
-        setTours(toursRes.data || []);
+        setTours(toursRes.data?.length ? toursRes.data : fallbackTours);
       } catch (err) {
         setError('Our full destination catalogue is loading soon. You can still start planning below.');
       } finally {
@@ -85,7 +99,7 @@ function Home() {
 
   return (
     <div className="space-y-20 pb-8">
-      <section className="relative -mx-4 flex min-h-[650px] items-end overflow-hidden px-6 py-12 sm:-mx-8 sm:px-10 lg:-mx-8 lg:min-h-[710px] lg:px-16 lg:py-16">
+      <section className="relative left-1/2 flex min-h-[650px] w-screen -translate-x-1/2 items-end overflow-hidden px-6 py-12 sm:min-h-[710px] sm:px-10 lg:min-h-[760px] lg:px-16 lg:py-16">
         {heroSlides.map((slide, index) => (
           <img key={slide.image} src={slide.image} alt={index === activeSlide ? slide.alt : ''} aria-hidden={index !== activeSlide} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${index === activeSlide ? 'opacity-100' : 'opacity-0'}`} />
         ))}
@@ -102,6 +116,14 @@ function Home() {
       <section className="mx-auto max-w-7xl"><div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="section-kicker">Start with a region</p><h2 className="mt-2 text-3xl font-semibold text-slate-950 sm:text-4xl">Three unforgettable ways north</h2></div><Link to="/destinations" className="text-sm font-bold text-teal-800 hover:text-teal-950">Browse every destination</Link></div><div className="grid gap-5 md:grid-cols-3">{routes.map((route) => <Link to={route.to} key={route.name} className="group relative min-h-[360px] overflow-hidden rounded-md bg-slate-900"><img src={route.image} alt={route.name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-6 text-white"><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-300">{route.tag}</p><h3 className="mt-2 text-2xl font-semibold">{route.name}</h3><p className="mt-2 text-sm leading-6 text-slate-200">{route.detail}</p></div></Link>)}</div></section>
 
       <section className="border-y border-slate-200 bg-white py-16"><div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start"><div><p className="section-kicker">Travel well</p><h2 className="mt-2 text-3xl font-semibold text-slate-950">The trip should feel as good as the view.</h2><p className="mt-4 max-w-md leading-7 text-slate-600">Built around the practical details that make high-mountain travel more relaxed: sensible routes, local context and straight answers.</p></div><div className="grid gap-6 sm:grid-cols-3">{travelPillars.map(([title, detail], index) => <div className="border-l-2 border-amber-400 pl-5" key={title}><p className="text-xs font-bold text-teal-800">0{index + 1}</p><h3 className="mt-3 text-lg font-semibold text-slate-950">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{detail}</p></div>)}</div></div></section>
+
+      <section className="mx-auto max-w-7xl"><div className="grid gap-6 lg:grid-cols-[.85fr_1.15fr]"><div className="rounded-2xl bg-amber-100 p-8 sm:p-10"><p className="section-kicker">Choose your journey</p><h2 className="mt-3 text-3xl font-semibold text-slate-950">Not every mountain holiday needs the same pace.</h2><p className="mt-4 leading-7 text-slate-700">Whether you want lake days and local food, a heritage-focused road trip or a trek with mountain cabins, we help shape a route around your available time and comfort level.</p><Link to="/inquire" className="mt-7 inline-flex rounded-md bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Build a private route</Link></div><div className="grid gap-4 sm:grid-cols-3"><div className="rounded-2xl border border-slate-200 bg-white p-6"><p className="text-2xl">◌</p><h3 className="mt-5 text-lg font-semibold">Culture & heritage</h3><p className="mt-2 text-sm leading-6 text-slate-600">Forts, old villages, local crafts and food shared at a slower pace.</p></div><div className="rounded-2xl border border-slate-200 bg-white p-6"><p className="text-2xl">⌁</p><h3 className="mt-5 text-lg font-semibold">Lakes & valleys</h3><p className="mt-2 text-sm leading-6 text-slate-600">Easy scenic days around Attabad, Kachura, Phander and Deosai.</p></div><div className="rounded-2xl border border-slate-200 bg-white p-6"><p className="text-2xl">△</p><h3 className="mt-5 text-lg font-semibold">Trekking escapes</h3><p className="mt-2 text-sm leading-6 text-slate-600">Trail-led adventures for travellers ready for mountain terrain.</p></div></div></div></section>
+
+      <section className="mx-auto max-w-7xl rounded-2xl bg-slate-950 px-7 py-12 text-white sm:px-10"><div className="grid gap-8 lg:grid-cols-[1fr_.9fr]"><div><p className="text-sm font-bold uppercase tracking-[0.16em] text-amber-300">Know before you go</p><h2 className="mt-3 text-3xl font-semibold">A little preparation makes the mountains feel easy.</h2></div><div className="grid gap-5 sm:grid-cols-2"><p className="border-l border-amber-300/70 pl-4 text-sm leading-6 text-slate-200"><strong className="block text-white">Season matters</strong>Most valley trips are most comfortable from spring to autumn; high passes and Deosai are seasonal.</p><p className="border-l border-amber-300/70 pl-4 text-sm leading-6 text-slate-200"><strong className="block text-white">Leave room in the plan</strong>Mountain weather and road conditions can change—an unhurried itinerary is always the better one.</p></div></div></section>
+
+      <section className="mx-auto max-w-7xl"><div className="max-w-2xl"><p className="section-kicker">When to travel</p><h2 className="mt-2 text-3xl font-semibold text-slate-950">A season-by-season guide to the north.</h2><p className="mt-4 leading-7 text-slate-600">Gilgit-Baltistan changes character throughout the year. Use this guide as a starting point, then confirm road and weather conditions close to departure.</p></div><div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">{seasonalGuide.map(([season, detail]) => <article key={season} className="rounded-2xl border border-slate-200 bg-white p-6"><p className="text-sm font-bold text-teal-800">{season}</p><p className="mt-4 text-sm leading-6 text-slate-600">{detail}</p></article>)}</div></section>
+
+      <section className="border-y border-slate-200 bg-white py-16"><div className="mx-auto max-w-7xl"><div className="max-w-2xl"><p className="section-kicker">Travel journal</p><h2 className="mt-2 text-3xl font-semibold text-slate-950">The small details make the best stories.</h2></div><div className="mt-8 grid gap-6 md:grid-cols-3">{journalNotes.map(([title, detail]) => <article key={title} className="border-t-2 border-amber-400 pt-5"><h3 className="text-xl font-semibold text-slate-950">{title}</h3><p className="mt-3 leading-7 text-slate-600">{detail}</p></article>)}</div></div></section>
 
       <section className="mx-auto max-w-7xl"><div className="mb-8 flex items-end justify-between gap-4"><div><p className="section-kicker">Explore deeper</p><h2 className="mt-2 text-3xl font-semibold text-slate-950">Featured destinations</h2></div><Link to="/destinations" className="text-sm font-bold text-teal-800 hover:text-teal-950">See all</Link></div>{loading ? <LoadingSpinner /> : error ? <p className="border-l-2 border-amber-400 pl-4 text-slate-600">{error}</p> : <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">{places.slice(0, 6).map((place) => <PlaceCard key={place.slug} place={place} />)}</div>}</section>
 
