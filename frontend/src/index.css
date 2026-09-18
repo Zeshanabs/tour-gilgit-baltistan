@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-stone-50 text-slate-900 antialiased;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+.section-kicker {
+  @apply text-xs font-bold uppercase tracking-[0.16em] text-teal-800;
+}
