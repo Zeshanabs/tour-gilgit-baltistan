@@ -113,6 +113,42 @@ function Home() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-7xl">
+        <div className="grid gap-4 md:grid-cols-4">
+          {[
+            ['10+', 'Scenic valleys'],
+            ['3,000m+', 'Highland viewpoints'],
+            ['Apr-Oct', 'Best travel window'],
+            ['4.9/5', 'Traveler satisfaction'],
+          ].map(([value, label]) => (
+            <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-3xl font-semibold text-slate-950">{value}</p>
+              <p className="mt-2 text-sm text-slate-600">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl">
+        <div className="mb-8 text-center">
+          <p className="section-kicker">How it works</p>
+          <h2 className="mt-2 text-3xl font-semibold text-slate-950">Travel north without the overwhelm.</h2>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            ['1. Pick your mood', 'Choose mountain lakes, forts, villages or trekking routes that match your travel style.'],
+            ['2. Build your route', 'Shape a day-by-day plan around seasons, road conditions and your available time.'],
+            ['3. Travel at your pace', 'Stay local, move slowly and enjoy the valleys without rushing the journey.'],
+          ].map(([title, detail], index) => (
+            <div key={title} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-800">0{index + 1}</div>
+              <h3 className="text-xl font-semibold text-slate-950">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl"><div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="section-kicker">Start with a region</p><h2 className="mt-2 text-3xl font-semibold text-slate-950 sm:text-4xl">Three unforgettable ways north</h2></div><Link to="/destinations" className="text-sm font-bold text-teal-800 hover:text-teal-950">Browse every destination</Link></div><div className="grid gap-5 md:grid-cols-3">{routes.map((route) => <Link to={route.to} key={route.name} className="group relative min-h-[360px] overflow-hidden rounded-md bg-slate-900"><img src={route.image} alt={route.name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-6 text-white"><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-300">{route.tag}</p><h3 className="mt-2 text-2xl font-semibold">{route.name}</h3><p className="mt-2 text-sm leading-6 text-slate-200">{route.detail}</p></div></Link>)}</div></section>
 
       <section className="border-y border-slate-200 bg-white py-16"><div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start"><div><p className="section-kicker">Travel well</p><h2 className="mt-2 text-3xl font-semibold text-slate-950">The trip should feel as good as the view.</h2><p className="mt-4 max-w-md leading-7 text-slate-600">Built around the practical details that make high-mountain travel more relaxed: sensible routes, local context and straight answers.</p></div><div className="grid gap-6 sm:grid-cols-3">{travelPillars.map(([title, detail], index) => <div className="border-l-2 border-amber-400 pl-5" key={title}><p className="text-xs font-bold text-teal-800">0{index + 1}</p><h3 className="mt-3 text-lg font-semibold text-slate-950">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{detail}</p></div>)}</div></div></section>
